@@ -50,7 +50,7 @@ public final class Company {
     // TODO add documentation here.
     public void storeInStorageRack(final StationeryItem stationeryItem) {
         if (itemStorageRack.getNumberOfItems() < itemStorageRack.getCapacity()) {
-            itemStorageRack.addItem(stationeryItem, stationeryItem.getIdentifier());
+            itemStorageRack.addItem(stationeryItem);
         }
         // TODO: implement exercise 1e here.
     }
