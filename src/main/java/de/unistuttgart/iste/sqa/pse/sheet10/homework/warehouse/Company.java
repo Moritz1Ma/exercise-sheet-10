@@ -41,7 +41,6 @@ public final class Company {
 	  @ ensures a stationeryIte is being added;
 	  @
 	 */
-
     /**
      * This method adds a new stationeryItem to itemStorageRack. If the Rack is full, nothing happens.
      *
