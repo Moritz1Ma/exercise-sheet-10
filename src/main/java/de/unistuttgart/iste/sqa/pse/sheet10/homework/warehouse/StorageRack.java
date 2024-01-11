@@ -22,7 +22,7 @@ public final class StorageRack {
     private final int capacity;
     private int numberOfItems;
     public ArrayList<Optional<StationeryItem>> storageRack;
-    public HashMap<Identifier, Integer> identifierToNumber;
+    public HashMap<Identifier, Integer> identifierToNumber; // TODO identifierToNumber --> identifiers besser?
 
 
     // TODO: Add data structures for exercises 1a and 1c here.
@@ -50,14 +50,12 @@ public final class StorageRack {
         for (int i = 0; i < capacity; i++) {
             this.storageRack.add(Optional.empty());
         }
-        identifierToNumber = new HashMap<>();
-
-        // TODO initialize data structures for exercises 1a and 1c here.
+        this.identifierToNumber = new HashMap<>(capacity);
     }
 
     // TODO add documentation here.
 	/*@
-	@ requires capacity >-1;
+	@ requires capacity > 0;
 	@ requires StorageRack != null;
 	@ requires identifier !=0;
 	@ ensures stationaryItem is added to StorageRack for the lowest index that is empty;
@@ -73,7 +71,7 @@ public final class StorageRack {
         for (int i = 0; i < capacity; i++) {
             if (storageRack.get(i).isEmpty()) {
                 storageRack.set(i, Optional.of(stationeryItem));
-                identifierToNumber.put(stationeryItem.getIdentifier(), i);
+                identifierToNumber.put(stationeryItem.getIdentifier(), i); //TODO mit Quentin drüber schauen --> i + 1
                 this.numberOfItems++;
                 break;
             }
@@ -90,16 +88,15 @@ public final class StorageRack {
 	 */
 
     /**
-     * This method removes an item for desired compartmentNumber and identifier.
+     * This method removes an item for desired compartmentNumber.
      *
      * @param compartmentNumber number of the compartment;
-     * @throws IllegalArgumentException if there is nothing to remove;
      */
     public void removeItem(final int compartmentNumber) {
-       if(!storageRack.isEmpty()){
-           Identifier id = getItem(compartmentNumber).get().getIdentifier();
+       if(!storageRack.get(compartmentNumber - 1).equals(Optional.empty())){
+           Identifier id = getItem(compartmentNumber - 1).get().getIdentifier();
            identifierToNumber.remove(id);
-           storageRack.remove(compartmentNumber);
+           storageRack.set(compartmentNumber - 1, Optional.empty());
            this.numberOfItems--;
        }
         // TODO implement exercises 1b and 1d here.
@@ -113,16 +110,16 @@ public final class StorageRack {
 	 */
 
     /**
-     * This method returns an items compartmentNumber.
+     * This method returns the Item in a compartment.
      *
-     * @param compartmentNumber;
-     * @return compartmentNumber of the element;
+     * @param compartmentNumber The number of the compartment of which the item is looked for
+     * @return Optional of the StationeryItem in the compartment
      * @ throws IllegalArgumentException if the compartmentNumber does not exist in the StorageRack.
      */
     public /*@ pure @*/ Optional<StationeryItem> getItem(final int compartmentNumber) {
-        if (compartmentNumber > -1) {
-            if (storageRack.get(compartmentNumber).isPresent()) {
-                return storageRack.get(compartmentNumber);
+        if (compartmentNumber > 0) {
+            if (storageRack.get(compartmentNumber - 1).isPresent()) {
+                return storageRack.get(compartmentNumber - 1);
             } else {
                 return Optional.empty();
             }
