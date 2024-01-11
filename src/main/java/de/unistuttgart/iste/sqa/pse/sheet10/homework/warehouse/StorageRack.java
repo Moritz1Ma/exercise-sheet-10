@@ -4,7 +4,6 @@ import de.unistuttgart.iste.sqa.pse.sheet10.homework.warehouse.items.StationeryI
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -22,8 +21,8 @@ public final class StorageRack {
 
     private final int capacity;
     private int numberOfItems;
-    public ArrayList<Optional<StationeryItem>> StorageRack;
-    public HashMap<Identifier, Integer> IdentifierToNumber;
+    public ArrayList<Optional<StationeryItem>> storageRack;
+    public HashMap<Identifier, Integer> identifierToNumber;
 
 
     // TODO: Add data structures for exercises 1a and 1c here.
@@ -46,12 +45,12 @@ public final class StorageRack {
             throw new IllegalArgumentException("A warehouse must have a minimum capacity of 1.");
         }
         this.capacity = capacity;
-        numberOfItems = 0;
-        this.StorageRack = new ArrayList<>(capacity);
+        this.numberOfItems = 0;
+        this.storageRack = new ArrayList<>(capacity);
         for (int i = 0; i < capacity; i++) {
-            this.StorageRack.add(Optional.empty());
+            this.storageRack.add(Optional.empty());
         }
-        IdentifierToNumber = new HashMap<>();
+        identifierToNumber = new HashMap<>();
 
         // TODO initialize data structures for exercises 1a and 1c here.
     }
@@ -72,9 +71,11 @@ public final class StorageRack {
      */
     public void addItem(final StationeryItem stationeryItem) {
         for (int i = 0; i < capacity; i++) {
-            if (StorageRack.get(i).isEmpty()) {
-                StorageRack.set(i, Optional.of(stationeryItem));
-                IdentifierToNumber.put(stationeryItem.getIdentifier(), i);
+            if (storageRack.get(i).isEmpty()) {
+                storageRack.set(i, Optional.of(stationeryItem));
+                identifierToNumber.put(stationeryItem.getIdentifier(), i);
+                this.numberOfItems++;
+                break;
             }
         }
         // TODO implement exercises 1b and 1d here.
@@ -92,16 +93,15 @@ public final class StorageRack {
      * This method removes an item for desired compartmentNumber and identifier.
      *
      * @param compartmentNumber number of the compartment;
-     * @param identifier        identifier of the stationaryItem;
      * @throws IllegalArgumentException if there is nothing to remove;
      */
-    public void removeItem(final int compartmentNumber, final Identifier identifier) {
-        if (StorageRack.isEmpty()) {
-            throw new IllegalArgumentException("404. Item was not found.");
-        } else {
-            StorageRack.remove(compartmentNumber);
-            IdentifierToNumber.remove(identifier);
-        }
+    public void removeItem(final int compartmentNumber) {
+       if(!storageRack.isEmpty()){
+           Identifier id = storageRack.get(compartmentNumber).get().getIdentifier();
+           identifierToNumber.remove(id);
+           storageRack.remove(compartmentNumber);
+           this.numberOfItems--;
+       }
         // TODO implement exercises 1b and 1d here.
     }
 
@@ -121,8 +121,8 @@ public final class StorageRack {
      */
     public /*@ pure @*/ Optional<StationeryItem> getItem(final int compartmentNumber) {
         if (compartmentNumber > -1) {
-            if (StorageRack.get(compartmentNumber).isPresent()) {
-                return StorageRack.get(compartmentNumber);
+            if (storageRack.get(compartmentNumber).isPresent()) {
+                return storageRack.get(compartmentNumber);
             } else {
                 return Optional.empty();
             }
@@ -146,8 +146,8 @@ public final class StorageRack {
      * @throws IllegalArgumentException if identifier doesnt exist.
      */
     public /*@ pure @*/ Optional<Integer> getCompartmentNumberOf(final Identifier identifier) {
-        if (IdentifierToNumber.containsKey(identifier)) {
-            int compartmentNumber = (int) IdentifierToNumber.get(identifier);
+        if (identifierToNumber.containsKey(identifier)) {
+            int compartmentNumber = (int) identifierToNumber.get(identifier);
             return Optional.of(compartmentNumber);
         } else {
             throw new IllegalArgumentException("This identifier is nonexistent.");
