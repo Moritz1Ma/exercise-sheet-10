@@ -22,10 +22,9 @@ public final class StorageRack {
     private final int capacity;
     private int numberOfItems;
     public ArrayList<Optional<StationeryItem>> storageRack;
-    public HashMap<Identifier, Integer> identifierToNumber; // TODO identifierToNumber --> identifiers besser?
+    public HashMap<Identifier, Integer> identifierMap;
 
 
-    // TODO: Add data structures for exercises 1a and 1c here.
 	/*@
 	@ requires capacity > 0;
 	@ ensures numberOfItems == 0;
@@ -50,7 +49,7 @@ public final class StorageRack {
         for (int i = 0; i < capacity; i++) {
             this.storageRack.add(Optional.empty());
         }
-        this.identifierToNumber = new HashMap<>(capacity);
+        this.identifierMap = new HashMap<>(capacity);
     }
 
     // TODO add documentation here.
@@ -71,12 +70,11 @@ public final class StorageRack {
         for (int i = 0; i < capacity; i++) {
             if (storageRack.get(i).isEmpty()) {
                 storageRack.set(i, Optional.of(stationeryItem));
-                identifierToNumber.put(stationeryItem.getIdentifier(), i); //TODO mit Quentin drüber schauen --> i + 1
+                identifierMap.put(stationeryItem.getIdentifier(), ++i);
                 this.numberOfItems++;
                 break;
             }
         }
-        // TODO implement exercises 1b and 1d here.
     }
     // TODO add documentation here.
 	/*@
@@ -93,13 +91,13 @@ public final class StorageRack {
      * @param compartmentNumber number of the compartment;
      */
     public void removeItem(final int compartmentNumber) {
-       if(!storageRack.get(compartmentNumber - 1).equals(Optional.empty())){
-           Identifier id = getItem(compartmentNumber - 1).get().getIdentifier();
-           identifierToNumber.remove(id);
-           storageRack.set(compartmentNumber - 1, Optional.empty());
-           this.numberOfItems--;
-       }
-        // TODO implement exercises 1b and 1d here.
+        if (getItem(compartmentNumber - 1).isPresent()
+                && !storageRack.get(compartmentNumber - 1).equals(Optional.empty())) {
+            Identifier id = getItem(compartmentNumber - 1).get().getIdentifier();
+            identifierMap.remove(id);
+            storageRack.set(compartmentNumber - 1, Optional.empty());
+            this.numberOfItems--;
+        }
     }
 
     // TODO add documentation here.
@@ -114,7 +112,7 @@ public final class StorageRack {
      *
      * @param compartmentNumber The number of the compartment of which the item is looked for
      * @return Optional of the StationeryItem in the compartment
-     * @ throws IllegalArgumentException if the compartmentNumber does not exist in the StorageRack.
+     * @throws IllegalArgumentException if the compartmentNumber does not exist in the StorageRack.
      */
     public /*@ pure @*/ Optional<StationeryItem> getItem(final int compartmentNumber) {
         if (compartmentNumber > 0) {
@@ -123,10 +121,8 @@ public final class StorageRack {
             } else {
                 return Optional.empty();
             }
-        } else {
-            throw new IllegalArgumentException("This compartment number is invalid");
         }
-        // TODO implement exercise 1b here.
+        throw new IllegalArgumentException("This compartment number is invalid");
     }
 
     // TODO add documentation here.
@@ -140,16 +136,14 @@ public final class StorageRack {
      *
      * @param identifier, the identifier of the StationeryItem.
      * @return compartment number of the identifier, if existent. Otherwise, returns null.
-     * @throws IllegalArgumentException if identifier doesnt exist.
      */
     public /*@ pure @*/ Optional<Integer> getCompartmentNumberOf(final Identifier identifier) {
-        if (identifierToNumber.containsKey(identifier)) {
-            int compartmentNumber = (int) identifierToNumber.get(identifier);
-            return Optional.of(compartmentNumber);
+        if (identifierMap.containsKey(identifier)) {
+            int compartmentNumber = identifierMap.get(identifier);
+            return Optional.of(compartmentNumber + 1);
         } else {
-            throw new IllegalArgumentException("This identifier is nonexistent.");
+            return Optional.empty();
         }
-        // TODO implement exercise 1d here
     }
 
 	/*@
@@ -160,7 +154,7 @@ public final class StorageRack {
      * @return The capacity of this warehouse in items.
      */
     public /*@ pure @*/ int getCapacity() {
-        return capacity;
+        return this.capacity;
     }
 
 	/*@
