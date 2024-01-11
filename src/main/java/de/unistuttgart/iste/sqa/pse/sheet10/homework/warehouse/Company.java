@@ -45,12 +45,15 @@ public final class Company {
     /**
      * This method adds a new stationeryItem to itemStorageRack. If the Rack is full, nothing happens.
      *
-     * @param stationeryItem
+     * @param stationeryItem;
      */
     // TODO add documentation here.
     public void storeInStorageRack(final StationeryItem stationeryItem) {
-        if (itemStorageRack.getNumberOfItems() < itemStorageRack.getCapacity()) {
-            itemStorageRack.addItem(stationeryItem);
+        try {
+            if (itemStorageRack.getNumberOfItems() < itemStorageRack.getCapacity()) {
+                itemStorageRack.addItem(stationeryItem);
+            }
+        } catch (IllegalArgumentException exception) {
         }
         // TODO: implement exercise 1e here.
     }
@@ -60,6 +63,7 @@ public final class Company {
 
      */
     public void processIncomingOrder(final Identifier identifier, final Customer customer) {
+
         // TODO implement exercises 1h and 1i here.
     }
 
