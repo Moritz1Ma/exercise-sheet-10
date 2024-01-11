@@ -33,7 +33,7 @@ public final class Company {
     public Company() {
         orderBuffer = new Buffer();
         this.itemStorageRack = new StorageRack(75);
-        // TODO: implement exercises 1e and 1i here.
+        // TODO: implement exercises 1i here.
     }
 
 	/*@
@@ -41,6 +41,7 @@ public final class Company {
 	  @ ensures a stationeryIte is being added;
 	  @
 	 */
+
     /**
      * This method adds a new stationeryItem to itemStorageRack. If the Rack is full, nothing happens.
      *
@@ -48,13 +49,9 @@ public final class Company {
      */
     // TODO add documentation here.
     public void storeInStorageRack(final StationeryItem stationeryItem) {
-        try {
-            if (itemStorageRack.getNumberOfItems() < itemStorageRack.getCapacity()) {
-                itemStorageRack.addItem(stationeryItem);
-            }
-        } catch (IllegalArgumentException exception) {
+        if (itemStorageRack.getNumberOfItems() < itemStorageRack.getCapacity()) {
+            itemStorageRack.addItem(stationeryItem);
         }
-        // TODO: implement exercise 1e here.
     }
 
     // TODO add documentation here.
@@ -62,6 +59,17 @@ public final class Company {
 
      */
     public void processIncomingOrder(final Identifier identifier, final Customer customer) {
+        if (itemStorageRack.getCompartmentNumberOf(identifier).equals(Optional.empty())
+                || itemStorageRack.getCompartmentNumberOf(identifier).isEmpty()) {
+            return;
+        }
+        int compartmentNumber = itemStorageRack.getCompartmentNumberOf(identifier).get();
+        if (itemStorageRack.getItem(compartmentNumber).isEmpty()){
+            return;
+        }
+        StationeryItem order = itemStorageRack.getItem(compartmentNumber).get();
+        orderBuffer.bufferItem(order);
+        itemStorageRack.removeItem(compartmentNumber);
 
         // TODO implement exercises 1h and 1i here.
     }

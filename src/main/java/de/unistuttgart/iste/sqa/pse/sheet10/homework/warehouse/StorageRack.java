@@ -21,8 +21,8 @@ public final class StorageRack {
 
     private final int capacity;
     private int numberOfItems;
-    public ArrayList<Optional<StationeryItem>> storageRack;
-    public HashMap<Identifier, Integer> identifierMap;
+    private final ArrayList<Optional<StationeryItem>> storageRack;
+    private final HashMap<Identifier, Integer> identifierMap;
 
 
 	/*@
@@ -57,6 +57,7 @@ public final class StorageRack {
 	@ requires capacity > 0;
 	@ requires StorageRack != null;
 	@ requires identifier !=0;
+	@ requires numberOfItems < capacity;
 	@ ensures stationaryItem is added to StorageRack for the lowest index that is empty;
 	@ ensures identifier of the stationeryItem is being given its index number from the StorageRack;
 	@*/
@@ -67,6 +68,9 @@ public final class StorageRack {
      * @param stationeryItem the item desired to be added;
      */
     public void addItem(final StationeryItem stationeryItem) {
+        if(numberOfItems >= capacity){
+            return;
+        }
         for (int i = 0; i < capacity; i++) {
             if (storageRack.get(i).isEmpty()) {
                 storageRack.set(i, Optional.of(stationeryItem));

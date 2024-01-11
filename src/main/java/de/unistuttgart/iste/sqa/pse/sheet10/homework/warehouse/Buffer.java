@@ -2,7 +2,6 @@ package de.unistuttgart.iste.sqa.pse.sheet10.homework.warehouse;
 
 import de.unistuttgart.iste.sqa.pse.sheet10.homework.warehouse.items.StationeryItem;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;
@@ -14,7 +13,7 @@ import java.util.Queue;
  */
 public final class Buffer {
 
-    private final Queue <StationeryItem> bufferQueue= new LinkedList<>();
+    private final Queue<StationeryItem> bufferQueue;
 
     // TODO add data structure for exercise 1f here.
 
@@ -27,7 +26,7 @@ public final class Buffer {
      */
 // TODO add documentation here
     public Buffer() {
-        Queue bufferQueue = new LinkedList<StationeryItem>();
+        bufferQueue = new LinkedList<>();
         // TODO initialize data structure for exercise 1f here.
     }
 
@@ -40,17 +39,14 @@ public final class Buffer {
      * This method adds a new item to the bufferQueue.
      *
      * @param stationeryItem;
-     * @throws NoSuchElementException if the item doesnt exist;
+     * @throws IllegalArgumentException if the item is null;
      */
     // TODO add documentation here
     public void bufferItem(final StationeryItem stationeryItem) {
         if (stationeryItem == null) {
-            throw new NoSuchElementException("404. Item not found.");
-        } else {
-            bufferQueue.add(stationeryItem);
+            throw new IllegalArgumentException("Item must not be null");
         }
-
-        // TODO implement exercise 1g here.
+        bufferQueue.add(stationeryItem);
     }
 
 	/*@
@@ -66,13 +62,12 @@ public final class Buffer {
      */
     // TODO add documentation here
     public StationeryItem releaseItem() {
-        StationeryItem item = (StationeryItem) bufferQueue.poll();
+        StationeryItem item = bufferQueue.poll();
         if (item == null) {
             throw new NoSuchElementException("There are no items in this buffer. There is nothing to be released!");
         } else {
             return item;
         }
-        // TODO implement exercise 1g here.
     }
 
 	/*@
