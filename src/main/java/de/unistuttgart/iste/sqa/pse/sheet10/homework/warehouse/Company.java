@@ -5,8 +5,10 @@ import de.unistuttgart.iste.sqa.pse.sheet10.homework.warehouse.items.Pen;
 import de.unistuttgart.iste.sqa.pse.sheet10.homework.warehouse.items.Ruler;
 import de.unistuttgart.iste.sqa.pse.sheet10.homework.warehouse.items.StationeryItem;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Represents a company.
@@ -19,7 +21,9 @@ public final class Company {
 
     private final StorageRack itemStorageRack;
     private final Buffer orderBuffer;
-    // TODO: Add data structure for exercise 1i here.
+
+    private final Set<Customer> returningCustomers;
+
 
     // TODO add documentation here.
 	/*@
@@ -33,6 +37,7 @@ public final class Company {
     public Company() {
         orderBuffer = new Buffer();
         this.itemStorageRack = new StorageRack(75);
+        this.returningCustomers = new HashSet<>();
         // TODO: implement exercises 1i here.
     }
 
@@ -68,10 +73,14 @@ public final class Company {
             return;
         }
         StationeryItem order = itemStorageRack.getItem(compartmentNumber).get();
-        orderBuffer.bufferItem(order);
-        itemStorageRack.removeItem(compartmentNumber);
 
-        // TODO implement exercises 1h and 1i here.
+
+        orderBuffer.bufferItem(order);
+        if(!returningCustomers.contains(customer)){
+            orderBuffer.bufferItem(getBonusItem());
+            returningCustomers.add(customer);
+        }
+        itemStorageRack.removeItem(compartmentNumber);
     }
 
 	/*@
