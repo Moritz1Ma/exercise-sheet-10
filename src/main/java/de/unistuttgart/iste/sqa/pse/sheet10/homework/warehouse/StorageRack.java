@@ -97,7 +97,7 @@ public final class StorageRack {
      */
     public void removeItem(final int compartmentNumber) {
        if(!storageRack.isEmpty()){
-           Identifier id = storageRack.get(compartmentNumber).get().getIdentifier();
+           Identifier id = getItem(compartmentNumber).get().getIdentifier();
            identifierToNumber.remove(id);
            storageRack.remove(compartmentNumber);
            this.numberOfItems--;
