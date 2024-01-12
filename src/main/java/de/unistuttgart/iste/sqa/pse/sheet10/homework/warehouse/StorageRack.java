@@ -95,9 +95,9 @@ public final class StorageRack {
      * @param compartmentNumber number of the compartment;
      */
     public void removeItem(final int compartmentNumber) {
-        if (getItem(compartmentNumber - 1).isPresent()
+        if (getItem(compartmentNumber).isPresent()
                 && !storageRack.get(compartmentNumber - 1).equals(Optional.empty())) {
-            Identifier id = getItem(compartmentNumber - 1).get().getIdentifier();
+            Identifier id = getItem(compartmentNumber).get().getIdentifier();
             identifierMap.remove(id);
             storageRack.set(compartmentNumber - 1, Optional.empty());
             this.numberOfItems--;
@@ -106,8 +106,8 @@ public final class StorageRack {
 
     // TODO add documentation here.
 	/*@
-	@ requires compartmentNumber !<0;
-	@ requires StorageRack != null;
+	@ requires 0 < compartmentNumber <= capacity;
+	@ requires storageRack != null;
 	@ ensures the compartmentNumber of the element is returned;
 	 */
 
@@ -119,8 +119,9 @@ public final class StorageRack {
      * @throws IllegalArgumentException if the compartmentNumber does not exist in the StorageRack.
      */
     public /*@ pure @*/ Optional<StationeryItem> getItem(final int compartmentNumber) {
-        if (compartmentNumber > 0) {
-            if (storageRack.get(compartmentNumber - 1).isPresent()) {
+        assert storageRack != null;
+        if (0 < compartmentNumber && compartmentNumber <= capacity) {
+            if (!storageRack.get(compartmentNumber - 1).equals(Optional.empty())) {
                 return storageRack.get(compartmentNumber - 1);
             } else {
                 return Optional.empty();
@@ -136,18 +137,19 @@ public final class StorageRack {
 		 */
 
     /**
-     * This method returns the compartmentNumber of a wanted StationeryItem from the StorageRack by its identifier.
+     * This method returns the compartmentNumber of a wanted StationeryItem
+     * from the StorageRack by its identifier.
      *
-     * @param identifier, the identifier of the StationeryItem.
+     * @param identifier the identifier of the StationeryItem.
      * @return compartment number of the identifier, if existent. Otherwise, returns null.
      */
     public /*@ pure @*/ Optional<Integer> getCompartmentNumberOf(final Identifier identifier) {
         if (identifierMap.containsKey(identifier)) {
             int compartmentNumber = identifierMap.get(identifier);
-            return Optional.of(compartmentNumber + 1);
-        } else {
-            return Optional.empty();
+            return Optional.of(compartmentNumber);
         }
+        return Optional.empty();
+
     }
 
 	/*@

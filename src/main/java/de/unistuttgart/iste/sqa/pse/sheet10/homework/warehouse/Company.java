@@ -38,7 +38,6 @@ public final class Company {
         orderBuffer = new Buffer();
         this.itemStorageRack = new StorageRack(75);
         this.returningCustomers = new HashSet<>();
-        // TODO: implement exercises 1i here.
     }
 
 	/*@
@@ -64,8 +63,10 @@ public final class Company {
 
      */
     public void processIncomingOrder(final Identifier identifier, final Customer customer) {
-        if (itemStorageRack.getCompartmentNumberOf(identifier).equals(Optional.empty())
-                || itemStorageRack.getCompartmentNumberOf(identifier).isEmpty()) {
+        if (itemStorageRack.getCompartmentNumberOf(identifier).equals(Optional.empty())) {
+            return;
+        }
+        if(itemStorageRack.getCompartmentNumberOf(identifier).isEmpty()){
             return;
         }
         int compartmentNumber = itemStorageRack.getCompartmentNumberOf(identifier).get();
@@ -76,11 +77,11 @@ public final class Company {
 
 
         orderBuffer.bufferItem(order);
+        itemStorageRack.removeItem(compartmentNumber);
         if(!returningCustomers.contains(customer)){
             orderBuffer.bufferItem(getBonusItem());
             returningCustomers.add(customer);
         }
-        itemStorageRack.removeItem(compartmentNumber);
     }
 
 	/*@

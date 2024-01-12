@@ -18,7 +18,7 @@ public final class Buffer {
     // TODO add data structure for exercise 1f here.
 
 	/*@
-	  @ requires bufferQueue !=0;
+	  @ requires bufferQueue != null;
 	  @*/
 
     /**
@@ -31,14 +31,14 @@ public final class Buffer {
     }
 
 	/*@
-	  @ requires bufferQueue !== null;
+	  @ requires bufferQueue != null;
 	  @ ensures an item has been added to the queue or an exception has been thrown;
 	 */
 
     /**
      * This method adds a new item to the bufferQueue.
      *
-     * @param stationeryItem;
+     * @param stationeryItem the stationeryItem which is added to the bufferQueue
      * @throws IllegalArgumentException if the item is null;
      */
     // TODO add documentation here
