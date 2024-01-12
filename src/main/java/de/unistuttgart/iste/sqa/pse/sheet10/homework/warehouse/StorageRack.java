@@ -28,9 +28,9 @@ public final class StorageRack {
 	/*@
 	@ requires capacity > 0;
 	@ ensures numberOfItems == 0;
-	@ ensures StorageRack is a new ArrayList with optionally filled items;
-	@ ensures Identifier is a new HashMap;
-	TODO add missing pre- and postconditions here or in the JavaDoc.
+	@ ensures StorageRack is a new ArrayList with initial capacity set as this.capacity, which is filled with
+	          empty Optionals;
+	@ ensures identifierMap is a new HashMap with the same initial capacity as storageRack;
 	@*/
 
     /**
@@ -41,36 +41,50 @@ public final class StorageRack {
      */
     public StorageRack(final int capacity) {
         if (capacity <= 0) {
-            throw new IllegalArgumentException("A warehouse must have a minimum capacity of 1.");
+            throw new IllegalArgumentException("A warehouse must have a minimum capacity of 1");
         }
         this.capacity = capacity;
         this.numberOfItems = 0;
         this.storageRack = new ArrayList<>(capacity);
+        /*@
+          @ loop_invariant added Optional.empty() i times
+          @ decreasing capacity - i
+         */
         for (int i = 0; i < capacity; i++) {
             this.storageRack.add(Optional.empty());
         }
         this.identifierMap = new HashMap<>(capacity);
+        checkInvariants();
     }
 
-    // TODO add documentation here.
 	/*@
 	@ requires capacity > 0;
-	@ requires StorageRack != null;
-	@ requires identifier !=0;
+	@ requires stationerItem != null;
+	@ requires numberOfItems < capacity;
+	@ requires storageRack != null;
+    @ requires identifier != null;
 	@ requires numberOfItems < capacity;
 	@ ensures stationaryItem is added to StorageRack for the lowest index that is empty;
-	@ ensures identifier of the stationeryItem is being given its index number from the StorageRack;
+	@ ensures identifier of the stationeryItem is being given the compartmentNumber of the storageRack;
 	@*/
 
     /**
-     * This method adds a new StationeryItem to the StorageRack.
+     * Adds a new StationeryItem to the storageRack;
      *
-     * @param stationeryItem the item desired to be added;
+     * @param stationeryItem the Item to be added;
+     * @throws IllegalArgumentException If the stationery item is null;
      */
     public void addItem(final StationeryItem stationeryItem) {
-        if(numberOfItems >= capacity){
+        if (numberOfItems >= capacity) {
             return;
         }
+        if (stationeryItem == null) {
+            throw new IllegalArgumentException("The stationery item must not be null");
+        }
+        /*@
+          @ loop_invariant loop checked i slots;
+          @ decreasing indexOfFirstEmptySlot - i;
+         */
         for (int i = 0; i < capacity; i++) {
             if (storageRack.get(i).isEmpty()) {
                 storageRack.set(i, Optional.of(stationeryItem));
@@ -80,17 +94,16 @@ public final class StorageRack {
             }
         }
     }
-    // TODO add documentation here.
+
 	/*@
-	@ requires compartmentNumber ! <0;
-	@ requires StorageRack != null;
-	@ requires identifier != null;
+	@ requires compartmentNumber >= 0;
+	@ requires storageRack != null;
 	@ ensures the item is removed from its position;
-	@ ensures the identifier´s number of its index is removed;
+	@ ensures the identifiers entry is removed from the identifierMap;
 	 */
 
     /**
-     * This method removes an item for desired compartmentNumber.
+     * This method removes an item from the specified compartmentNumber.
      *
      * @param compartmentNumber number of the compartment;
      */
@@ -104,7 +117,6 @@ public final class StorageRack {
         }
     }
 
-    // TODO add documentation here.
 	/*@
 	@ requires 0 < compartmentNumber <= capacity;
 	@ requires storageRack != null;
@@ -119,7 +131,6 @@ public final class StorageRack {
      * @throws IllegalArgumentException if the compartmentNumber does not exist in the StorageRack.
      */
     public /*@ pure @*/ Optional<StationeryItem> getItem(final int compartmentNumber) {
-        assert storageRack != null;
         if (0 < compartmentNumber && compartmentNumber <= capacity) {
             if (!storageRack.get(compartmentNumber - 1).equals(Optional.empty())) {
                 return storageRack.get(compartmentNumber - 1);
@@ -149,7 +160,6 @@ public final class StorageRack {
             return Optional.of(compartmentNumber);
         }
         return Optional.empty();
-
     }
 
 	/*@
@@ -173,4 +183,14 @@ public final class StorageRack {
     public /*@ pure @*/ int getNumberOfItems() {
         return this.numberOfItems;
     }
+
+    /**
+     * A check if the invariants of the class are fulfilled
+     */
+    private void checkInvariants() {
+        assert capacity > 0 : "Capacity should be greater than 0";
+        assert numberOfItems >= 0 : "Number of items should be non-negative";
+        assert numberOfItems <= capacity : "Number of items should be less than or equal to capacity";
+    }
+
 }
