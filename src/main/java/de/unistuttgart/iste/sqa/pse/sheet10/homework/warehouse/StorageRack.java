@@ -52,7 +52,7 @@ public final class StorageRack {
         this.identifierMap = new HashMap<>(capacity);
     }
 
-    // TODO add documentation here.
+
 	/*@
 	@ requires capacity > 0;
 	@ requires StorageRack != null;
@@ -80,7 +80,6 @@ public final class StorageRack {
             }
         }
     }
-    // TODO add documentation here.
 	/*@
 	@ requires compartmentNumber ! <0;
 	@ requires StorageRack != null;
@@ -104,7 +103,6 @@ public final class StorageRack {
         }
     }
 
-    // TODO add documentation here.
 	/*@
 	@ requires compartmentNumber !<0;
 	@ requires StorageRack != null;
@@ -129,7 +127,6 @@ public final class StorageRack {
         throw new IllegalArgumentException("This compartment number is invalid");
     }
 
-    // TODO add documentation here.
 		/*@
 		  @ requires identifier != null;
 		  @ ensures compartmentNumber of wanted identifier is being returned.
@@ -155,6 +152,7 @@ public final class StorageRack {
 	@*/
 
     /**
+     * This method returns the capacity of the warehouse items.
      * @return The capacity of this warehouse in items.
      */
     public /*@ pure @*/ int getCapacity() {
@@ -166,6 +164,7 @@ public final class StorageRack {
 	@*/
 
     /**
+     * This method returns the number of items in this warehouse.
      * @return The number of items in this warehouse.
      */
     public /*@ pure @*/ int getNumberOfItems() {

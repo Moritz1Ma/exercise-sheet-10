@@ -15,7 +15,6 @@ public final class Buffer {
 
     private final Queue<StationeryItem> bufferQueue;
 
-    // TODO add data structure for exercise 1f here.
 
 	/*@
 	  @ requires bufferQueue !=0;
@@ -24,10 +23,8 @@ public final class Buffer {
     /**
      * This constructor creates a new bufferQueue.
      */
-// TODO add documentation here
     public Buffer() {
         bufferQueue = new LinkedList<>();
-        // TODO initialize data structure for exercise 1f here.
     }
 
 	/*@
@@ -41,7 +38,6 @@ public final class Buffer {
      * @param stationeryItem;
      * @throws IllegalArgumentException if the item is null;
      */
-    // TODO add documentation here
     public void bufferItem(final StationeryItem stationeryItem) {
         if (stationeryItem == null) {
             throw new IllegalArgumentException("Item must not be null");
@@ -60,7 +56,6 @@ public final class Buffer {
      * @return item at the bottom of the queue, if existent.
      * @throws NoSuchElementException if the bufferQueue is empty;
      */
-    // TODO add documentation here
     public StationeryItem releaseItem() {
         StationeryItem item = bufferQueue.poll();
         if (item == null) {
@@ -83,6 +78,5 @@ public final class Buffer {
     // TODO add documentation here
     public /*@ pure @*/ boolean isEmpty() {
         return bufferQueue.isEmpty();
-        // TODO implement exercise 1g here.
     }
 }
