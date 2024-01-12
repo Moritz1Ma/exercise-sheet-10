@@ -96,14 +96,11 @@ public final class Company {
      */
     private /*@ pure @*/ StationeryItem getBonusItem() {
 
-        switch ((new Random().nextInt(3))) {
-            case 1:
-                return new Compass(new Identifier(), "A marketing bonus item.");
-            case 2:
-                return new Ruler(new Identifier(), "A marketing bonus item.");
-            default:
-                return new Pen(new Identifier(), "A marketing bonus item.");
-        }
+        return switch ((new Random().nextInt(3))) {
+            case 1 -> new Compass(new Identifier(), "A marketing bonus item.");
+            case 2 -> new Ruler(new Identifier(), "A marketing bonus item.");
+            default -> new Pen(new Identifier(), "A marketing bonus item.");
+        };
     }
 
     /**
