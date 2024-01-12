@@ -23,7 +23,6 @@ public final class Buffer {
      */
     public Buffer() {
         bufferQueue = new LinkedList<>();
-
     }
 
 	/*@
@@ -49,7 +48,6 @@ public final class Buffer {
 	  @ requires !bufferQueue.isEmpty();
 	  @ ensures an item has been released or an exception has been thrown;
 	 */
-
     /**
      * Removes and returns an item from the bufferQueue.
      *
@@ -67,7 +65,6 @@ public final class Buffer {
 	  @ requires bufferQueue !== null;
 	  @ ensures \return == bufferQueue.isEmpty();.
 	 */
-
     /**
      * Checks whether the bufferQueue is empty or not.
      *

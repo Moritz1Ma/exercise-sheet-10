@@ -77,7 +77,7 @@ public final class Company {
 
         int compartmentNumber = itemStorageRack.getCompartmentNumberOf(identifier).get();
         if (itemStorageRack.getItem(compartmentNumber).isEmpty()){
-            return;
+            throw new IllegalStateException("Identifier points to an empty slot");
         }
 
         StationeryItem order = itemStorageRack.getItem(compartmentNumber).get();

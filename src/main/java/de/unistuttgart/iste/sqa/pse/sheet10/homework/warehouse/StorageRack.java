@@ -32,7 +32,6 @@ public final class StorageRack {
 	          empty Optionals;
 	@ ensures identifierMap is a new HashMap with the same initial capacity as storageRack;
 	@*/
-
     /**
      * Creates a new storage rack with the given capacity.
      *
@@ -67,7 +66,6 @@ public final class StorageRack {
 	@ ensures stationaryItem is added to StorageRack for the lowest index that is empty;
 	@ ensures identifier of the stationeryItem is being given the compartmentNumber of the storageRack;
 	@*/
-
     /**
      * Adds a new StationeryItem to the storageRack;
      *
@@ -101,7 +99,6 @@ public final class StorageRack {
 	@ ensures the item is removed from its position;
 	@ ensures the identifiers entry is removed from the identifierMap;
 	 */
-
     /**
      * This method removes an item from the specified compartmentNumber.
      *
@@ -122,7 +119,6 @@ public final class StorageRack {
 	@ requires storageRack != null;
 	@ ensures the compartmentNumber of the element is returned;
 	 */
-
     /**
      * This method returns the Item in a compartment.
      *
@@ -141,12 +137,10 @@ public final class StorageRack {
         throw new IllegalArgumentException("This compartment number is invalid");
     }
 
-    // TODO add documentation here.
 		/*@
 		  @ requires identifier != null;
 		  @ ensures compartmentNumber of wanted identifier is being returned.
 		 */
-
     /**
      * This method returns the compartmentNumber of a wanted StationeryItem
      * from the StorageRack by its identifier.
@@ -165,7 +159,6 @@ public final class StorageRack {
 	/*@
 	@ ensures \result == capacity;
 	@*/
-
     /**
      * @return The capacity of this warehouse in items.
      */
