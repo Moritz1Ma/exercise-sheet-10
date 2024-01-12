@@ -69,7 +69,7 @@ public final class Company {
      * This method processes an incoming order.
      *
      * It takes the StationeryItem by its identifier,adds it to the orderBuffer and removes the compartmentNumber from
-     * the itemStorageRack;
+     * the itemStorageRack.
      * If the customer is a new customer, a bonus item is additionally added to the orderBuffer and the new customer is
      * added to the returningCustomers Set.
      * @param identifier the identifier number of each StationeryItem;
